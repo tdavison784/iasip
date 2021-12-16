@@ -31,13 +31,13 @@ def get_episode_names():
         soup = BeautifulSoup(resp.text, 'html.parser')
         soup_data.append(soup)
 
-
-    episode_data_list = []
+    episode_names_list = []
     for data in soup_data:
         episode_data = data.find('table', attrs={'class': 'tablebg'}).find_all('a')
-        print(episode_data)
+        for x in episode_data:
+            episode_names_list.append(x.text)
 
-    return episode_data_list
+    return episode_names_list
 
 
 def get_episode_hrefs():
@@ -82,17 +82,21 @@ def main():
     hrefs = get_episode_hrefs()
     episodes = get_episode_names()
 
+    seasons = []
+    episode_names = []
+    for name in episodes:
+        seasons.append(name.split('-')[0])
+        episode_names.append(name.split('-')[-1])
 
-    combined_data = zip(hrefs, episodes)
+    combined_data = zip(hrefs, seasons, episode_names)
 
     new_data = []
-    for href, name in combined_data:
-        print(f'{href}, {name[-1]}, {name[0]}')
-        data = [name[-1], name[0], base_url+href]
+    for href, season, ep_name in combined_data:
+        data = [ep_name, season, base_url+href]
         new_data.append(data)
 
     enter_data(new_data)
 
 
 if __name__ == '__main__':
-    test()
+    main()
