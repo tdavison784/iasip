@@ -32,14 +32,10 @@ def get_episode_names():
         soup_data.append(soup)
 
 
-
     episode_data_list = []
     for data in soup_data:
         episode_data = data.find('table', attrs={'class': 'tablebg'}).find_all('a')
-        episode_data_list.append(episode_data)
-
-    for ep_data in episode_data_list:
-        
+        print(episode_data)
 
     return episode_data_list
 
@@ -70,6 +66,15 @@ def get_episode_hrefs():
 
 
 
+def test():
+    #This is how to get a episode season and name.
+    resp = requests.get(url='https://transcripts.foreverdreaming.org/viewforum.php?f=104')
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    data = soup.find('table', attrs={'class': 'tablebg'}).find_all('a')
+    for x in data:
+        print(x.text)
+
+
 def main():
 
 
@@ -78,7 +83,7 @@ def main():
     episodes = get_episode_names()
 
 
-    combined_data = zip(hrefs, all_episodes)
+    combined_data = zip(hrefs, episodes)
 
     new_data = []
     for href, name in combined_data:
@@ -90,4 +95,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    test()
