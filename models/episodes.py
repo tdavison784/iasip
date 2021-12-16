@@ -77,3 +77,16 @@ def generate_csv():
         new_data.append(data)
 
     enter_data(new_data)
+
+
+def get_transcript_text(url):
+    """Function to get all text from the transcripts"""
+
+    transcript_data = []
+    resp = requests.get(url)
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    data = soup.find('div', attrs={'class': 'postbody'}).find_all('p')
+    for line in data:
+        transcript_data.append(line.text)
+
+    return transcript_data
