@@ -86,7 +86,10 @@ def get_transcript_text(url):
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text, 'html.parser')
     data = soup.find('div', attrs={'class': 'postbody'}).find_all('p')
+    find_words = ['God Dammit', 'god dammit', 'You Bitch', 'you bitch', 'Goddamn it', 'GodDamn it', 'goddamn it']
     for line in data:
-        transcript_data.append(line.text)
+        for word in find_words:
+            if word in line.text:
+                transcript_data.append(line.text)
 
     return transcript_data

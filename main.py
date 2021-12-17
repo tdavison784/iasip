@@ -21,8 +21,11 @@ def main():
     for href, season, ep_name in combined_data:
         data = [ep_name, season, base_url+href]
         new_data.append(data)
-    df = pd.DataFrame(new_data, columns=['href', 'seasons', 'episodes'])
-    print(df['href'])
+    df = pd.DataFrame(new_data, columns=['name', 'season_episode', 'href'])
+
+    for url in df['href']:
+        transcript_text = get_transcript_text(url)
+        print(transcript_text)
 
 
 
