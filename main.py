@@ -1,11 +1,29 @@
-from models.episodes import generate_csv, get_transcript_text
+from models.episodes import generate_csv, get_transcript_text, get_episode_names, get_episode_hrefs
+import pandas as pd
 
 
 def main():
 
-    generate_csv()
+    base_url = "https://transcripts.foreverdreaming.org/"
+    # generate_csv()
+    transcripts_list = []
+    hrefs = get_episode_hrefs()
+    episodes = get_episode_names()
 
-    print(get_transcript_text('https://transcripts.foreverdreaming.org/./viewtopic.php?f=104&t=15474&sid=35a4d5ff291e5886458e3568bca76797'))
+    seasons = []
+    episode_names = []
+    for name in episodes:
+        seasons.append(name.split('-')[0])
+        episode_names.append(name.split('-')[-1])
+
+    combined_data = zip(hrefs, seasons, episode_names)
+    new_data = []
+    for href, season, ep_name in combined_data:
+        data = [ep_name, season, base_url+href]
+        new_data.append(data)
+    df = pd.DataFrame(new_data, columns=['href', 'seasons', 'episodes'])
+    print(df['href'])
+
 
 
 if __name__ == '__main__':
