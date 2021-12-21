@@ -82,7 +82,10 @@ def generate_csv():
 def get_transcript_text(url):
     """Function to get all text from the transcripts"""
 
-    transcript_data = []
+    transcript_data = {
+        'damnits': [],
+        'bitches': []
+    }
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text, 'html.parser')
     data = soup.find('div', attrs={'class': 'postbody'}).find_all('p')
@@ -90,6 +93,9 @@ def get_transcript_text(url):
     for line in data:
         for word in find_words:
             if word in line.text:
-                transcript_data.append(line.text)
+                if word.__contains__('God') or word.__contains__('god'):
+                    transcript_data['damnits'].append(line.text)
+                elif word.__contains__('You Bitch') or word.__contains__('you bitch'):
+                    transcript_data['bitches'].append(line.text)
 
     return transcript_data
