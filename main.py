@@ -19,7 +19,7 @@ def main():
         df["name"].str.contains('|'.join('Read'))
 
         fig = px.bar(df, x='season_episode', y=['god_dammit', 'you_bitch'], height=400, barmode='group',
-                     hover_data=['name', 'season_episode'])
+                     hover_data=['name', 'season_episode', 'you_bitch_dialog', 'god_damnit_dialog'])
         pio.write_html(fig, file='index.html', auto_open=True)
 
     else:
@@ -46,22 +46,28 @@ def main():
             all_swear_text.append(get_transcript_text(url))
 
         damnits_length = []
+        damnits_text = []
+        bitches_text = []
         bitches_length = []
         for text in all_swear_text:
             for k, v in text.items():
                 if k == 'damnits':
                     damnits_length.append(len(v))
+                    damnits_text.append(v)
                 else:
                     bitches_length.append(len(v))
+                    bitches_text.append(v)
 
         df['god_dammit'] = damnits_length
         df['you_bitch'] = bitches_length
+        df['god_damnit_dialog'] = damnits_text
+        df['you_bitch_dialog'] = bitches_text
         df["name"].str.contains('|'.join('Read'))
 
         df.to_csv('./always_sunny-data.csv')
 
         fig = px.bar(df, x='season_episode', y=['god_dammit', 'you_bitch'], height=400, barmode='group',
-                     hover_data=['name', 'season_episode'])
+                     hover_data=['name', 'season_episode', 'you_bitch_dialog', 'god_damnit_dialog'])
         fig.show()
 
 
